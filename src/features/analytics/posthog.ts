@@ -14,14 +14,24 @@ const allowedEvents = new Set([
 
 export function limitEvent(event: CaptureResult | null): CaptureResult | null {
   if (!event || !allowedEvents.has(event.event)) return null;
+  const projectToken = event.properties?.token;
+  const distinctId = event.properties?.distinct_id;
+  if (typeof projectToken !== "string" || typeof distinctId !== "string") return null;
+  const properties = {
+    token: projectToken,
+    distinct_id: distinctId,
+    $process_person_profile: false,
+  };
   if (event.event !== "$pageview")
-    return { ...event, properties: { $process_person_profile: false } };
+    return { uuid: event.uuid, event: event.event, timestamp: event.timestamp, properties };
   const pathname = event.properties?.$pathname;
   const currentUrl = event.properties?.$current_url;
   if (typeof pathname !== "string" || typeof currentUrl !== "string") return null;
   return {
-    ...event,
-    properties: { $pathname: pathname, $current_url: currentUrl, $process_person_profile: false },
+    uuid: event.uuid,
+    event: event.event,
+    timestamp: event.timestamp,
+    properties: { ...properties, $pathname: pathname, $current_url: currentUrl },
   };
 }
 
@@ -40,6 +50,7 @@ if (analyticsEnabled) {
       disable_session_recording: true,
       disable_surveys: true,
       disable_web_experiments: true,
+      advanced_disable_flags: true,
       before_send: limitEvent,
     });
   } catch {

@@ -9,12 +9,20 @@ describe("PostHog payload boundary", () => {
       uuid: "test-event-1",
       event: "application_submitted",
       properties: {
+        token: "phc_test",
+        distinct_id: "temporary-session-id",
         answer: "private answer",
         $current_url: "https://example.test/#/aplikuj/private-id?query=private",
         $elements: [{ text: "private answer" }],
       },
+      $set: { email: "private@example.test" },
     } as CaptureResult;
-    expect(limitEvent(event)?.properties).toEqual({ $process_person_profile: false });
+    expect(limitEvent(event)?.properties).toEqual({
+      token: "phc_test",
+      distinct_id: "temporary-session-id",
+      $process_person_profile: false,
+    });
+    expect(limitEvent(event)?.$set).toBeUndefined();
     expect(limitEvent({ ...event, event: "$autocapture" })).toBeNull();
   });
 
@@ -23,16 +31,21 @@ describe("PostHog payload boundary", () => {
       uuid: "test-event-2",
       event: "$pageview",
       properties: {
+        token: "phc_test",
+        distinct_id: "temporary-session-id",
         $pathname: "/oferty/:slug",
         $current_url: "https://example.test/#/oferty/:slug",
         $referrer: "https://example.test/private",
       },
     } as CaptureResult;
     expect(limitEvent(event)?.properties).toEqual({
+      token: "phc_test",
+      distinct_id: "temporary-session-id",
       $pathname: "/oferty/:slug",
       $current_url: "https://example.test/#/oferty/:slug",
       $process_person_profile: false,
     });
+    expect(limitEvent({ ...event, properties: { $pathname: "/oferty/:slug" } })).toBeNull();
   });
 
   it("replaces variable route segments before capture", () => {

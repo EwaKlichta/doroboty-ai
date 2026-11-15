@@ -23,10 +23,11 @@ environment. Do not put them in Git. The selected project is PostHog EU `351745`
 is `https://eu.i.posthog.com`.
 
 The SDK uses memory persistence, does not create person profiles, and disables autocapture, automatic
-pageviews/pageleaves, session recording, exceptions, performance capture, surveys and web experiments.
-`before_send` rejects all unexpected events and keeps only the sanitized route and URL on pageviews,
-plus `$process_person_profile: false` on all allowed events. No persona, job, company, application or
-project identifier is sent.
+pageviews/pageleaves, session recording, exceptions, performance capture, surveys, web experiments and
+the feature-flags request.
+`before_send` rejects all unexpected events and keeps the project token, temporary SDK distinct ID
+and `$process_person_profile: false` on allowed events. Pageviews additionally keep only the sanitized
+route and URL. No persona, job, company, application or project identifier is sent.
 
 ## Wizard outcome
 
@@ -41,6 +42,10 @@ reviewed in this branch using PostHog's current React SDK documentation.
 verification and Vite build passed. The 50 Playwright journeys passed using installed Edge. The
 default Chromium run could not launch because Playwright Chromium is not provisioned here. A separate
 source review checked the event allowlist, route normalization, privacy wording and build output.
+An additional 390×844 Edge emulation with a dummy token and intercepted PostHog requests showed
+three `$pageview` events for `/`, `/oferty` and `/oferty/:slug`, without the raw dynamic segment or
+query. It showed no `/flags/` request after disabling unused feature flags. The interception did not
+send data to PostHog.
 The build reports a JavaScript chunk of 1,048 kB (348 kB gzip); this is a performance follow-up, not
 a failing gate. No live PostHog ingestion or Netlify configuration has been verified yet; those require
 deployment after review.
