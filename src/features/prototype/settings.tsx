@@ -137,10 +137,12 @@ export function PrivacyPage() {
         <p>
           Profile, aplikacje i ustawienia pozostają w pamięci tej przeglądarki. Aplikacja nie wysyła
           ich do bazy ani dostawcy AI. Jeśli w danym wdrożeniu włączono analitykę PostHog, wysyła
-          nazwy odwiedzanych ekranów i wykonanych działań. Nie wysyła treści formularzy, CV,
-          nazwisk, identyfikatorów osób ani rekordów scenariusza, ani nagrań sesji. PostHog używa
-          technicznego identyfikatora w pamięci bieżącej karty. Plik eksportu zawiera cały lokalny
-          scenariusz, w tym notatki.
+          nazwy odwiedzanych ekranów i wykonanych działań oraz nagrania sesji. Automatyczne
+          zdarzenia kliknięć obejmują przyciski na publicznych ekranach, bez formularzy i panelu
+          konta. W nagraniach ukrywane są treści pól i tekst na ekranie, a obrazy, podglądy
+          dokumentów oraz atrybuty elementów są blokowane lub maskowane. PostHog nie otrzymuje
+          treści formularzy ani CV przez zdarzenia analityczne. Używa technicznego identyfikatora w
+          pamięci bieżącej karty. Plik eksportu zawiera cały lokalny scenariusz, w tym notatki.
         </p>
         <p>
           Możesz usunąć zmiany przyciskiem „Resetuj scenariusz” w ustawieniach lub wyczyścić dane

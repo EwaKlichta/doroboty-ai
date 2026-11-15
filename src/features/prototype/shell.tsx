@@ -65,6 +65,13 @@ export function Shell() {
   const person = currentPerson(state);
   const { pathname } = useLocation();
   const workspace = pathname.startsWith("/app") && person;
+  const publicAutocapture =
+    pathname === "/" ||
+    pathname === "/oferty" ||
+    pathname.startsWith("/oferty/") ||
+    pathname.startsWith("/firmy/") ||
+    pathname === "/metodologia" ||
+    pathname === "/polityka-prywatnosci";
   const [menuAt, setMenuAt] = useState<string | null>(null);
   const main = useRef<HTMLElement>(null);
   const lastPath = useRef(pathname);
@@ -111,7 +118,10 @@ export function Shell() {
     </>
   );
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div
+      className="min-h-dvh bg-background text-foreground"
+      data-ph-autocapture-public={publicAutocapture ? "" : undefined}
+    >
       <a
         href="#main"
         className="skip-link"
