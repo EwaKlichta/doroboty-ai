@@ -1,19 +1,22 @@
-# PostHog: Autocapture i nagrywanie sesji
+# PostHog autocapture and session replay
 
-## Zakres
+## Scope and acceptance criteria
 
-- Autocapture zapisuje kliknięcia przycisków na publicznych trasach: strona główna, oferty, strony firm, metodologia i prywatność. Nie obejmuje formularzy, panelu konta ani działań innych niż kliknięcie przycisku.
-- Nagrywanie sesji jest włączone w przeglądarkowym SDK. SDK maskuje treść pól, cały tekst i atrybuty elementów oraz blokuje obrazy, ramki, wideo, płótna i pliki. Nie zapisuje konsoli, nagłówków ani treści żądań.
-- Filtr `before_send` usuwa dodatkowe właściwości zdarzeń Autocapture, w tym odsyłacz i parametry URL. Własny znacznik przycisku „Szukam pracowników” pozwala rozpoznać go w zdarzeniach.
-- W projekcie PostHog 351745 Autocapture jest dozwolone (`autocapture_opt_out=false`), nagrywanie sesji włączone (`session_recording_opt_in=true`); wyłączono zbieranie konsoli i danych wydajnościowych.
+- Autocapture records button clicks on public routes: home, offers, company pages, methodology, and privacy. It excludes forms, account screens, and non-button interactions.
+- Session replay is enabled in the browser SDK. Inputs, page text, and element attributes are masked. Images, iframes, video, canvas, and file inputs are blocked. Console logs, request headers, and request bodies are not recorded.
+- The `before_send` filter removes extra autocapture properties, including referrers and URL parameters. A stable marker identifies the "Szukam pracowników" button.
+- PostHog project 351745 permits autocapture (`autocapture_opt_out=false`) and enables replay (`session_recording_opt_in=true`). Project console and performance capture were disabled.
+- The SDK follows project replay sampling and triggers; it does not force every session to record.
 
-## Sprawdzenie
+## Verification
 
-- Kliknięcie „Szukam pracowników” w zwykłej przeglądarce lokalnej aplikacji dotarło do PostHoga jako `$autocapture`, z etykietą przycisku i URL bez parametrów.
-- W projekcie pojawiło się nagranie sesji testowej: `01a1e13d-3de5-74ea-b194-e2fce5819388`.
-- Testowy napis `TEST_PRIVATE_MARKER_7842` wpisany w pole wyszukiwania nie pojawił się w właściwościach żadnego zdarzenia `$autocapture` w sprawdzanym okresie (zapytanie SQL zwróciło 0).
-- Test jednostkowy filtra zdarzeń, typy i lint przeszły. Maskowanie nagrania opiera się na konfiguracji SDK; zawartości klatek nagrania nie odczytywano z API.
+- Clicking "Szukam pracowników" in a normal browser sent `$autocapture` with the button label and a URL without parameters. No explicit `capture()` call was added for the button.
+- New local test recordings appeared in PostHog after the final non-forced start configuration. A representative recording is `01a1e149-a00b-7ba7-8808-e39c5f08edfd`.
+- A synthetic marker entered into the search field did not appear in any `$autocapture` event properties in the checked interval (SQL count: 0).
+- Submitting the public search form generated no `$autocapture` click for its button (SQL count: 0). A second synthetic marker from that form was also absent from autocapture event properties (SQL count: 0).
+- The latest SDK emitted `$elements_chain` without `$elements`; the event filter now accepts both SDK formats and replaces the selector with a safe `button` marker. The "Szukam pracowników" click arrived in PostHog after this fix.
+- Repository checks passed after review fixes: Prettier, design-system integrity and kit checks, ESLint, TypeScript, 36 unit tests, participant packet verification, and Vite build. Playwright passed 49/50 tests in the parallel run; the local Fraunces font check passed on an isolated rerun. The full gate could not run through `npm run check` because `npm` is unavailable in this environment, so its steps were invoked directly with Node and an existing local preview server.
 
-## Wdrożenie
+## Release
 
-Zmiany kodu wymagają scalenia PR i wdrożenia z gałęzi `main`. Ustawienia projektu PostHog są już zapisane. Po wdrożeniu sprawdzić zdarzenie z domeny produkcyjnej i nową sesję w [PostHog Replay](https://eu.posthog.com/project/351745/replay).
+Merge the reviewed PR and let Netlify build from `main`. After publishing, verify an autocapture event and a new replay from the production domain in [PostHog Replay](https://eu.posthog.com/project/351745/replay).

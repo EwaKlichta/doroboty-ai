@@ -28,20 +28,27 @@ export function limitEvent(event: CaptureResult | null): CaptureResult | null {
     $process_person_profile: false,
   };
   if (event.event === "$autocapture") {
-    if (event.properties?.$event_type !== "click" || !Array.isArray(event.properties?.$elements))
-      return null;
-    const elements = event.properties.$elements.map((element: unknown) => {
-      if (!element || typeof element !== "object") return null;
-      const value = element as Record<string, unknown>;
-      return {
-        tag_name: typeof value.tag_name === "string" ? value.tag_name : undefined,
-        nth_child: typeof value.nth_child === "number" ? value.nth_child : undefined,
-        nth_of_type: typeof value.nth_of_type === "number" ? value.nth_of_type : undefined,
-        ...(value["attr__data-attr"] === "home-audience-employer"
-          ? { "attr__data-attr": "home-audience-employer" }
-          : {}),
-      };
-    });
+    if (event.properties?.$event_type !== "click") return null;
+    const rawElements = event.properties.$elements;
+    const rawChain = event.properties.$elements_chain;
+    if (!Array.isArray(rawElements) && typeof rawChain !== "string") return null;
+    const elements = (Array.isArray(rawElements) ? rawElements : [{ tag_name: "button" }]).flatMap(
+      (element: unknown) => {
+        if (!element || typeof element !== "object") return [];
+        const value = element as Record<string, unknown>;
+        if (typeof value.tag_name !== "string") return [];
+        return [
+          {
+            tag_name: value.tag_name,
+            nth_child: typeof value.nth_child === "number" ? value.nth_child : undefined,
+            nth_of_type: typeof value.nth_of_type === "number" ? value.nth_of_type : undefined,
+            ...(value["attr__data-attr"] === "home-audience-employer"
+              ? { "attr__data-attr": "home-audience-employer" }
+              : {}),
+          },
+        ];
+      },
+    );
     const currentUrl = event.properties.$current_url;
     if (typeof currentUrl !== "string") return null;
     let origin: string;
@@ -60,6 +67,7 @@ export function limitEvent(event: CaptureResult | null): CaptureResult | null {
         ...properties,
         $event_type: "click",
         $elements: elements,
+        $elements_chain: "button",
         $el_text:
           typeof event.properties.$el_text === "string"
             ? event.properties.$el_text.slice(0, 100)
@@ -92,6 +100,7 @@ if (analyticsEnabled) {
         dom_event_allowlist: ["click"],
         element_allowlist: ["button"],
         css_selector_allowlist: ["[data-ph-autocapture-public]"],
+        css_selector_ignorelist: ["form", ".ph-no-autocapture", "[data-ph-no-autocapture]"],
       },
       capture_pageview: false,
       capture_pageleave: false,
@@ -115,7 +124,7 @@ if (analyticsEnabled) {
       advanced_disable_flags: false,
       before_send: limitEvent,
       loaded: (instance) => {
-        instance.startSessionRecording(true);
+        instance.startSessionRecording();
       },
     });
   } catch {

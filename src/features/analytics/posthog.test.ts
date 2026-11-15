@@ -60,12 +60,26 @@ describe("PostHog payload boundary", () => {
           "attr__data-attr": "home-audience-employer",
         },
       ],
+      $elements_chain: "button",
       $el_text: "Szukam pracowników",
       $current_url: "https://example.test/#/",
     });
     expect(
       limitEvent({ ...event, properties: { ...event.properties, $event_type: "change" } }),
     ).toBeNull();
+    expect(
+      limitEvent({
+        ...event,
+        properties: {
+          ...event.properties,
+          $elements: undefined,
+          $elements_chain: "button.private",
+        },
+      })?.properties,
+    ).toMatchObject({
+      $elements: [{ tag_name: "button" }],
+      $elements_chain: "button",
+    });
   });
 
   it("keeps only normalized pageview fields", () => {
