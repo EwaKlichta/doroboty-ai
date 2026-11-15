@@ -14,6 +14,8 @@ Ewa confirmed on 2026-11-15: up to 30 participants, a public link for several we
 4. Keep the archive, the verified report and its source revision together in the release handoff. The archive contains public static files only; do not upload the repository, Git history or instructor materials.
 5. Preserve the previous known working archive before an update. Public upload settings and credentials must be checked when the host is selected. Do not label the hosting procedure verified before this happens.
 
+For Git-connected Netlify deploys, `netlify.toml` runs the build and `scripts/release.py prepare` in sequence. Netlify publishes `dist/`, including `release.json`; compare its ID with the prepared archive before admitting participants.
+
 ## Rehearse restoring a release locally
 
 1. Run `python scripts/release.py restore ARCHIVE.zip` using a known working archive. Checksums are checked before writing into a fresh isolated directory. Existing application files and localStorage are not replaced.
