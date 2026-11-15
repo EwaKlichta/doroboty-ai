@@ -141,6 +141,7 @@ export default function HomePage() {
               </button>
               <button
                 type="button"
+                data-attr="home-audience-employer"
                 aria-pressed={employer}
                 aria-controls="candidate-path employer-path"
                 onClick={() => changeAudience("employer")}
