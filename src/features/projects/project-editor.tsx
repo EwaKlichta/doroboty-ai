@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
+import { usePostHog } from "@posthog/react";
 import { ArrowLeft, ArrowRight, Check, Eye, FolderOpen, Plus } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,6 +79,7 @@ export function ProjectsPage() {
 
 export function ProjectEditor() {
   const { state, run, issue, blocked } = usePrototype();
+  const posthog = usePostHog();
   const person = currentPerson(state)!;
   const [params] = useSearchParams();
   const returnSlug = params.get("oferta");
@@ -333,6 +335,9 @@ export function ProjectEditor() {
               <Button
                 onClick={() => {
                   if (persist()) {
+                    if (posthog.__loaded) {
+                      posthog.capture("project_saved", { save_type: "completed" });
+                    }
                     setSavedReview(true);
                     setMessage(
                       "Opis projektu został zapisany. Możesz dołączyć go do wybranej aplikacji.",
@@ -348,8 +353,12 @@ export function ProjectEditor() {
             <Button
               variant="link"
               onClick={() => {
-                if (persist())
+                if (persist()) {
+                  if (posthog.__loaded) {
+                    posthog.capture("project_saved", { save_type: "draft" });
+                  }
                   setMessage("Szkic zapisany. Możesz wrócić do niego w Moich projektach.");
+                }
               }}
             >
               Zapisz szkic na później

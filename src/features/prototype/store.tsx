@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { initialState, transition, type Action, type State } from "./model";
+import posthog from "posthog-js";
+import { currentPerson, initialState, transition, type Action, type State } from "./model";
 import { recordDiagnostic } from "./diagnostics";
 import {
   parseState,
@@ -44,6 +45,26 @@ function useStore() {
   const blockedNow = useRef(loaded.blocked);
   const conflictedNow = useRef(false);
   const writerHeld = useRef(false);
+  const identifiedPersonId = useRef<string | null>(null);
+  const activePerson = currentPerson(state);
+  useEffect(() => {
+    if (!posthog.__loaded) return;
+
+    const person = activePerson;
+    if (!person) {
+      if (identifiedPersonId.current !== null) {
+        posthog.reset();
+        identifiedPersonId.current = null;
+      }
+      return;
+    }
+
+    if (identifiedPersonId.current === person.id) return;
+    if (identifiedPersonId.current !== null) posthog.reset();
+
+    posthog.identify(person.id, { name: person.name, role: person.role });
+    identifiedPersonId.current = person.id;
+  }, [activePerson]);
   function stopWrites(message: string) {
     conflictedNow.current = true;
     blockedNow.current = true;

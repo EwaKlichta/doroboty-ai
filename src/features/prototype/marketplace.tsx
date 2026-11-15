@@ -1,5 +1,6 @@
 import { Link, useLocation, useParams, useSearchParams } from "react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { usePostHog } from "@posthog/react";
 import { ArrowUpRight, Users, MapPin, BriefcaseBusiness, Bookmark } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Search, ArrowRight, Monitor, X } from "lucide-react";
@@ -98,6 +99,7 @@ function LocalMap({ jobs }: { jobs: JobWithCompany[] }) {
 }
 export function JobsPage() {
   const { state } = usePrototype();
+  const posthog = usePostHog();
   const person = currentPerson(state);
   const [params, setParams] = useSearchParams();
   const filters = parseJobFilters(Object.fromEntries(params));
@@ -145,6 +147,14 @@ export function JobsPage() {
       const value = String(data.get(key) ?? "").trim();
       if (value) next.set(key, value);
       else next.delete(key);
+    }
+    const searchFilters = parseJobFilters(Object.fromEntries(next));
+    if (posthog.__loaded) {
+      posthog.capture("job_search_submitted", {
+        has_location: Boolean(searchFilters.location),
+        has_query: Boolean(searchFilters.query),
+        result_count: filterJobs(all, searchFilters).length,
+      });
     }
     setParams(next);
   }
@@ -332,6 +342,7 @@ export function JobPage() {
     return () => cancelAnimationFrame(frame);
   }, [location.hash, location.key, slug]);
   const { state, run } = usePrototype();
+  const posthog = usePostHog();
   const person = currentPerson(state);
   const job = publishedJobs(state).find((x) => x.slug === slug);
   if (!job) return <NotFound />;
@@ -420,7 +431,16 @@ export function JobPage() {
                     variant="outline"
                     aria-label="Zapisz ofertę"
                     aria-pressed={saved}
-                    onClick={() => run({ type: "toggle_saved", jobId: job.id })}
+                    onClick={() => {
+                      if (run({ type: "toggle_saved", jobId: job.id })) {
+                        if (posthog.__loaded) {
+                          posthog.capture("job_saved", {
+                            job_category: job.category,
+                            save_action: saved ? "removed" : "added",
+                          });
+                        }
+                      }
+                    }}
                   >
                     <Bookmark className={cn(saved && "fill-current")} />
                     Zapisz ofertę
