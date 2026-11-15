@@ -136,7 +136,10 @@ export function PrivacyPage() {
         </p>
         <p>
           Profile, aplikacje i ustawienia pozostają w pamięci tej przeglądarki. Aplikacja nie wysyła
-          ich do bazy, dostawcy AI ani systemu analitycznego. Plik eksportu zawiera cały lokalny
+          ich do bazy ani dostawcy AI. Jeśli w danym wdrożeniu włączono analitykę PostHog, wysyła
+          nazwy odwiedzanych ekranów i wykonanych działań. Nie wysyła treści formularzy, CV,
+          nazwisk, identyfikatorów osób ani rekordów scenariusza, ani nagrań sesji. PostHog używa
+          technicznego identyfikatora w pamięci bieżącej karty. Plik eksportu zawiera cały lokalny
           scenariusz, w tym notatki.
         </p>
         <p>

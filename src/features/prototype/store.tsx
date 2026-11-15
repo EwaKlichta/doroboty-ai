@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { initialState, transition, type Action, type State } from "./model";
 import { recordDiagnostic } from "./diagnostics";
+import { captureEvent } from "../analytics/posthog";
 import {
   parseState,
   readState,
@@ -80,7 +81,14 @@ function useStore() {
   }
   function run(action: Action) {
     try {
-      return commit(transition(latest.current, action));
+      const saved = commit(transition(latest.current, action));
+      if (saved) {
+        if (action.type === "submit") captureEvent("application_submitted");
+        else if (action.type === "publish") captureEvent("job_saved");
+        else if (action.type === "stage") captureEvent("recruitment_stage_changed");
+        else if (action.type === "project") captureEvent("project_saved");
+      }
+      return saved;
     } catch (e) {
       setError(
         e instanceof Error && e.name !== "ZodError"
