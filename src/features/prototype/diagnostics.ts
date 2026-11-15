@@ -1,3 +1,5 @@
+import { prototypeLogger } from "@/lib/posthog-logger";
+
 const KEY = "doroboty.diagnostics.v1";
 const CODES = [
   "storage-write",
@@ -43,6 +45,7 @@ export function recordDiagnostic(code: Code) {
   } catch {
     // Diagnostics must never interrupt the exercise when browser storage is denied.
   }
+  prototypeLogger.diagnostic(code);
 }
 
 export function downloadDiagnostics() {

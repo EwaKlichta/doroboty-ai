@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router";
+import { usePostHog } from "@posthog/react";
 import { CheckCircle2, FileText } from "lucide-react";
 import { ConfettiBurst, type ConfettiOrigin } from "@/components/confetti-burst";
 import { BackLink } from "@/components/back-link";
@@ -150,6 +151,7 @@ export function WorkspaceHome() {
 }
 export function ProfilePage({ preview = false }: { preview?: boolean }) {
   const { state, run } = usePrototype();
+  const posthog = usePostHog();
   const person = currentPerson(state)!;
   const [message, setMessage] = useState("");
   function save(e: FormEvent<HTMLFormElement>) {
@@ -165,8 +167,10 @@ export function ProfilePage({ preview = false }: { preview?: boolean }) {
           location: String(data.get("location")),
         },
       })
-    )
+    ) {
+      if (posthog.__loaded) posthog.capture("candidate_profile_saved");
       setMessage("Profil został zapisany.");
+    }
   }
   return (
     <>
@@ -241,6 +245,7 @@ export function SavedPage() {
 export function ApplyPage() {
   const { slug } = useParams();
   const { state, run } = usePrototype();
+  const posthog = usePostHog();
   const person = currentPerson(state)!;
   const navigate = useNavigate();
   const job = publishedJobs(state).find((x) => x.slug === slug);
@@ -294,6 +299,12 @@ export function ApplyPage() {
       return;
     }
     if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent, attachProject })) {
+      if (posthog.__loaded) {
+        posthog.capture("application_submitted", {
+          job_category: job!.category,
+          project_attached: attachProject,
+        });
+      }
       submittedOnce.current = true;
       setSubmitted(true);
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -396,9 +407,19 @@ export function ApplyPage() {
               )}
               <Link
                 to={`/app/projekt?oferta=${job.slug}`}
-                onClick={() =>
-                  run({ type: "draft", jobId: job.id, notes, generated, answer, attachProject })
-                }
+                onClick={() => {
+                  if (
+                    run({ type: "draft", jobId: job.id, notes, generated, answer, attachProject })
+                  ) {
+                    if (posthog.__loaded) {
+                      posthog.capture("application_draft_saved", {
+                        job_category: job.category,
+                        project_attached: attachProject,
+                        save_source: "project_editor",
+                      });
+                    }
+                  }
+                }}
               >
                 {project ? "Edytuj opis projektu" : "Opisz projekt do tej aplikacji"}
               </Link>
@@ -442,8 +463,16 @@ export function ApplyPage() {
                 onClick={() => {
                   if (
                     run({ type: "draft", jobId: job.id, notes, generated, answer, attachProject })
-                  )
+                  ) {
+                    if (posthog.__loaded) {
+                      posthog.capture("application_draft_saved", {
+                        job_category: job.category,
+                        project_attached: attachProject,
+                        save_source: "application_form",
+                      });
+                    }
                     setMessage("Szkic został zapisany.");
+                  }
                 }}
               >
                 Zapisz szkic
