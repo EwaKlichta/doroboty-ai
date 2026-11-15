@@ -1,6 +1,8 @@
+> **2026-11-15 update:** [Selected direction](SELECTED-DIRECTION.md) defines the visual direction for the entire application. Historical visual values below are superseded. Preserve behavioral/accessibility contracts and historical evidence. See [integration task](../tasks/selected-landing-integration.md) for this change's verification.
+
 # DoRoboty.ai design system — project instructions
 
-**Poster People v1.0.0 is the required visual reference for new and changed screens.** It is the accepted rounded, illustrated listing/offer system with Geist Serif headings. Use this directory before choosing page composition, typography, color or component treatment. The previous theme guidance has been removed at Wojtek's request.
+**The selected illustrated direction is required for the entire application.** Read [SELECTED-DIRECTION.md](SELECTED-DIRECTION.md) before visual work. The Poster People v1.0.0 material below describes the preserved historical kit and remains useful for behavior and component history; its Geist Serif, pink and exact measurements are not current visual requirements.
 
 This directory contains the complete immutable 67-file v1 agent kit and the receiving project's active integration guidance. The React application now has a host adaptation, mapped in [IMPLEMENTATION.md](IMPLEMENTATION.md). Treat current code as implementation to verify, not a second visual authority or proof of full acceptance. Apply the reference within the user's task scope; installing or updating guidance alone does not initiate a redesign.
 

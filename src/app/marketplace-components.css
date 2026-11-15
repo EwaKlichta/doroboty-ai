@@ -1,21 +1,21 @@
 /* Host-owned namespaced adaptation of Poster People 1.0.0; see immutable kit provenance. */
 :root {
   color-scheme: light;
-  --pp-paper: #f4f4f0;
+  --pp-paper: var(--gui-canvas);
   --pp-surface: #fff;
-  --pp-ink: #181818;
-  --pp-muted: #5e5a5c;
+  --pp-ink: var(--gui-text);
+  --pp-muted: var(--gui-text-muted);
   --pp-line: #d8d5d1;
-  --pp-action: #ff90e8;
-  --pp-action-hover: #ffacef;
-  --pp-fact: #ffe0f7;
-  --pp-yellow: #ffe45b;
+  --pp-action: var(--gui-color-1);
+  --pp-action-hover: var(--gui-color-2);
+  --pp-fact: var(--gui-color-1-transparent);
+  --pp-yellow: var(--gui-color-3);
   --pp-surface-hover: #fffefa;
   --pp-radius: 18px;
   --pp-radius-small: 10px;
   --pp-radius-large: 24px;
-  --pp-font-heading: "Geist Serif", Georgia, serif;
-  --pp-font: Arial, Helvetica, system-ui, sans-serif;
+  --pp-font-heading: var(--font-display);
+  --pp-font: var(--font-body);
 }
 
 /* Extracted from the accepted prototype. See CHANGES.md and provenance.json. */

@@ -1,3 +1,5 @@
+> **2026-11-15 update:** [Selected direction](SELECTED-DIRECTION.md) defines the visual direction for the entire application. Historical visual values below are superseded. Preserve behavioral/accessibility contracts and historical evidence. See [integration task](../tasks/selected-landing-integration.md) for this change's verification.
+
 # Design-system integration status
 
 This is a receiving-application snapshot as of November 2, 2026. The immutable reference remains Poster People v1.0.0 (67 files). User-requested host implementation/documentation does not imply a new source-kit release, publishing or approval of every application screen.

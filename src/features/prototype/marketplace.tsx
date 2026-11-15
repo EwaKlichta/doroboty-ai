@@ -7,7 +7,7 @@ import { BackLink } from "@/components/back-link";
 import { ResponsivePanel } from "@/components/responsive-panel";
 import { SalaryFact } from "@/features/jobs/salary-fact";
 import { functionLabels } from "@/features/jobs/presentation";
-import peopleArt from "../../../docs/design-system/agent-kit/assets/people.png";
+import peopleArt from "../../assets/selected/people.svg";
 import { CompanyLogo } from "@/features/jobs/company-logo";
 import { JobCard } from "@/features/jobs/job-card";
 import { JobFiltersForm } from "@/features/jobs/job-filters";
@@ -178,27 +178,17 @@ export function JobsPage() {
             onSubmit={search}
           >
             <label className="pp-search-field">
-              <span>
-                <Search className="pp-icon" />
-              </span>
-              <span className="sr-only">Szukaj ofert</span>
+              <span className="pp-search-label">Czego szukasz?</span>
               <input
                 name="query"
-                aria-label="Szukaj ofert"
                 maxLength={100}
                 defaultValue={filters.query ?? ""}
-                placeholder="Stanowisko, firma lub słowo kluczowe"
+                placeholder="Rola, firma lub słowo"
               />
             </label>
             <label className="pp-location-field">
-              <span>
-                <MapPin className="pp-icon" />
-              </span>
-              <select
-                name="location"
-                aria-label="Lokalizacja"
-                defaultValue={filters.location ?? ""}
-              >
+              <span className="pp-search-label">Lokalizacja</span>
+              <select name="location" defaultValue={filters.location ?? ""}>
                 <option value="">Cała Polska</option>
                 {[...new Set([...locations, ...(filters.location ? [filters.location] : [])])].map(
                   (x) => (
@@ -215,9 +205,9 @@ export function JobsPage() {
             {(
               [
                 ["", "Wszystkie oferty", ""],
-                ["build", "Build", "Twórz AI"],
-                ["apply", "Apply", "Wdrażaj AI"],
-                ["lead", "Lead", "Wyznaczaj kierunek"],
+                ["build", "Tworzę AI", "Build"],
+                ["apply", "Korzystam z AI", "Apply"],
+                ["lead", "Prowadzę projekty", "Lead"],
               ] as const
             ).map(([key, label, description]) => (
               <button

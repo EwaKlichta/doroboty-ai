@@ -13,11 +13,11 @@ export function JobCard({ job, saved }: { job: JobWithCompany; saved?: boolean }
       <CompanyLogo company={job.company} />
       <div className="pp-job-main">
         <div className="pp-job-topline">
+          <span className="pp-job-category">{categoryLabels[job.category]}</span>
+          <span className="pp-separator">/</span>
           <Link className="pp-job-company" to={`/firmy/${job.company.slug}`}>
             {job.company.name}
           </Link>
-          <span className="pp-separator">/</span>
-          <span className="pp-job-category">{categoryLabels[job.category]}</span>
         </div>
         <h3 className="pp-job-title">
           <Link to={`/oferty/${job.slug}`}>{job.title}</Link>

@@ -14,7 +14,9 @@ Storage uses one versioned localStorage key. Import validates schema/version, un
 
 src/features/prototype owns model/storage/state and page compositions. src/features/jobs retains reusable presentation/filter/description logic; src/components/ui owns Base UI controls. Keep changes small.
 
-LocalStorage is origin-specific. Reload preserves state; another browser/device/port starts separately. No cross-tab live synchronization is provided; close other tabs before editing/importing. Hash links reference records in the receiving browser, not transferred records.
+LocalStorage is origin-specific. Reload preserves state; another browser/device/port starts separately. One tab holds an exclusive Web Lock while the scenario is open. A second tab can inspect and export its in-memory state, but cannot save, import or reset until the first tab closes and the second reloads. If Web Locks is unavailable, persistence fails closed. The storage event and a stored-value comparison also stop a stale writer. No cross-tab live synchronization is provided. Hash links reference records in the receiving browser, not transferred records.
+
+The writer releases explicitly on pagehide. A document restored from the back/forward cache reloads to read fresh state and reacquire ownership. Session diagnostics store at most 50 allowlisted codes and timestamps in sessionStorage, with no exception text or scenario content. The top-level render boundary offers a diagnostic download. Diagnostics are manually shared with the owner; they are not centralized monitoring.
 
 ## Evidence and distribution
 

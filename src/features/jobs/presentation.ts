@@ -1,9 +1,9 @@
 import type { Job, JobCategory, RemoteStatus } from "@/features/jobs/types";
 
 export const categoryLabels: Record<JobCategory, string> = {
-  build: "Build",
-  apply: "Apply",
-  lead: "Lead",
+  build: "Tworzę AI · Build",
+  apply: "Korzystam z AI · Apply",
+  lead: "Prowadzę projekty · Lead",
 };
 
 export const functionLabels = {

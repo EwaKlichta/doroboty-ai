@@ -207,7 +207,7 @@
 .record-stage {
   padding: 3px 12px;
   border-radius: 18px;
-  background: #ffe0f7;
+  background: var(--gui-color-1-transparent);
 }
 .record-stage:focus {
   outline: 2px solid var(--gui-focus);

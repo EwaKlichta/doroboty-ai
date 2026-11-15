@@ -17,10 +17,27 @@ import {
 import { EmployerJobs, EmployerJobEditor, CompanyEditor } from "./employer";
 import { SettingsPage, PrivacyPage } from "./settings";
 import { CasePage } from "./case";
+import { ProjectsPage, ProjectEditor } from "../projects/project-editor";
 function AppRoutes() {
   return (
     <Routes>
       <Route element={<Shell />}>
+        <Route
+          path="app/projekty"
+          element={
+            <RequireRole role="candidate">
+              <ProjectsPage />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="app/projekt"
+          element={
+            <RequireRole role="candidate">
+              <ProjectEditor />
+            </RequireRole>
+          }
+        />
         <Route index element={<HomePage />} />
         <Route path="oferty" element={<JobsPage />} />
         <Route path="oferty/:slug" element={<JobPage />} />

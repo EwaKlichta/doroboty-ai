@@ -4,6 +4,7 @@ import { ConfirmDialog } from "@/components/confirm-dialog";
 import { usePrototype } from "./store";
 import { serializeState, MAX_IMPORT_BYTES } from "./storage";
 import { PageTitle } from "./shell";
+import { downloadDiagnostics } from "./diagnostics";
 
 export function downloadText(name: string, text: string, type = "application/json") {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -39,8 +40,7 @@ export function SettingsPage() {
   }
   function confirm() {
     if (pending === "reset") {
-      reset();
-      setMessage("Przywrócono scenariusz początkowy.");
+      if (reset()) setMessage("Przywrócono scenariusz początkowy.");
     } else if (importState(raw)) {
       setMessage("Dane zostały zaimportowane.");
     }
@@ -92,6 +92,17 @@ export function SettingsPage() {
           </p>
         )}
         {message && <p role="status">{message}</p>}
+      </section>
+      <section className="prototype-panel prototype-form mt-6">
+        <h2>Pomoc przy problemie</h2>
+        <p>
+          Zgłoś problem Ewie kanałem, którym otrzymałaś lub otrzymałeś link do ćwiczenia. Podaj, co
+          próbowałaś lub próbowałeś zrobić. Możesz dołączyć diagnostykę: zawiera tylko kody błędów i
+          godziny, bez treści formularzy i CV.
+        </p>
+        <Button variant="outline" onClick={downloadDiagnostics}>
+          Pobierz diagnostykę
+        </Button>
       </section>
       <section className="prototype-panel prototype-form mt-6">
         <h2>O prototypie</h2>

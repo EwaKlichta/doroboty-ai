@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { projectDraftSchema, projectSchema, type ProjectDraft } from "../projects/schema";
 import marketplace from "./data/marketplace.json" with { type: "json" };
 import people from "./data/people.json" with { type: "json" };
 import type { JobWithCompany } from "@/features/jobs/types";
@@ -105,6 +106,7 @@ export const nextStages: Record<Stage, Stage[]> = {
   hired: [],
 };
 const applicationSchema = z.object({
+  project: projectSchema.optional(),
   id,
   candidateId: id,
   jobId: id,
@@ -124,6 +126,7 @@ const applicationSchema = z.object({
     .max(30),
 });
 const draftSchema = z.object({
+  attachProject: z.boolean().optional(),
   candidateId: id,
   jobId: id,
   notes: text,
@@ -140,6 +143,10 @@ export const stateSchema = z
     applications: z.array(applicationSchema).max(2000),
     saved: z.array(z.object({ candidateId: id, jobId: id })).max(5000),
     drafts: z.array(draftSchema).max(1000),
+    projects: z
+      .array(z.object({ candidateId: id, value: projectDraftSchema }))
+      .max(100)
+      .default([]),
   })
   .superRefine((s, ctx) => {
     const problem = (message: string) => ctx.addIssue({ code: "custom", message });
@@ -154,6 +161,11 @@ export const stateSchema = z
     const companyIds = new Set(s.companies.map((x) => x.id));
     const jobs = new Map(s.jobs.map((x) => [x.id, x]));
     const candidates = new Set(s.people.filter((x) => x.role === "candidate").map((x) => x.id));
+    if (
+      new Set(s.projects.map((x) => x.candidateId)).size !== s.projects.length ||
+      s.projects.some((x) => !candidates.has(x.candidateId))
+    )
+      problem("Invalid project owner");
     if (s.activePersonId !== null && !s.people.some((x) => x.id === s.activePersonId))
       problem("Unknown active person");
     for (const p of s.people)
@@ -198,10 +210,18 @@ export type State = z.infer<typeof stateSchema>;
 export type Person = State["people"][number];
 export type Application = State["applications"][number];
 export type Action =
+  | { type: "project"; value: ProjectDraft }
   | { type: "select_person"; id: string | null }
   | { type: "profile"; value: z.infer<typeof profileSchema> }
   | { type: "toggle_saved"; jobId: string }
-  | { type: "draft"; jobId: string; notes: string; generated: string; answer: string }
+  | {
+      type: "draft";
+      jobId: string;
+      notes: string;
+      generated: string;
+      answer: string;
+      attachProject?: boolean;
+    }
   | {
       type: "submit";
       jobId: string;
@@ -209,6 +229,7 @@ export type Action =
       generated: string;
       answer: string;
       consent: boolean;
+      attachProject?: boolean;
     }
   | { type: "stage"; applicationId: string; stage: Stage; note: string }
   | { type: "withdraw"; applicationId: string }
@@ -278,6 +299,11 @@ export function transition(
     if (action.id !== null && !s.people.some((x) => x.id === action.id))
       fail("Nie znaleziono osoby.");
     s.activePersonId = action.id;
+  } else if (action.type === "project") {
+    const p = candidate();
+    const value = projectDraftSchema.parse(action.value);
+    s.projects = s.projects.filter((x) => x.candidateId !== p.id);
+    s.projects.push({ candidateId: p.id, value });
   } else if (action.type === "profile")
     Object.assign(candidate(), profileSchema.parse(action.value));
   else if (action.type === "toggle_saved") {
@@ -298,6 +324,9 @@ export function transition(
     if (!action.consent) fail("Zatwierdź treść i zgodę na przesłanie aplikacji.");
     if (s.applications.some((x) => x.candidateId === p.id && x.jobId === job.id))
       fail("Aplikacja na tę ofertę została już wysłana.");
+    const project = action.attachProject
+      ? projectSchema.parse(s.projects.find((x) => x.candidateId === p.id)?.value)
+      : undefined;
     s.applications.push(
       applicationSchema.parse({
         id: newId,
@@ -306,6 +335,7 @@ export function transition(
         companyId: job.companyId,
         jobTitle: job.title,
         candidateName: p.name,
+        project,
         cv: p.cv,
         answer: action.answer,
         sourceNotes: action.notes,

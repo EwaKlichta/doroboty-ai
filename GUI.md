@@ -1,21 +1,19 @@
-# GUI — DoRoboty.ai Poster People
+> **Current visual authority (2026-11-15):** Ewa requires the entire application to follow [SELECTED-DIRECTION.md](docs/design-system/SELECTED-DIRECTION.md). Preserve product behavior and the immutable historical kit.
 
-The required visual direction for new and changed screens is the accepted **Poster People** design system. The project instructions are [docs/design-system/README.md](docs/design-system/README.md). Read them before UI work; they define how the standalone reference is adapted to this React/TypeScript/Vite application. The previous theme reference tree and skill requirements have been removed.
+# GUI — DoRoboty.ai selected illustrated direction
 
-## Read and preview
+The entire application uses Fraunces headings, DM Sans UI, paper and white working surfaces, purple actions, lavender selection, occasional lime highlights, rounded controls and original hand-drawn people. [SELECTED-DIRECTION.md](docs/design-system/SELECTED-DIRECTION.md) records the visual roles and scope. The older Poster People kit is historical reference only.
 
-1. [Project integration guide](docs/design-system/README.md): authority, React/Base UI mapping, routes/state, assets and completion criteria.
-2. [Host implementation rules](docs/design-system/IMPLEMENTATION.md), [React component catalog](docs/design-system/HOST-COMPONENTS.md), [record/CV APIs](docs/design-system/RECORDS.md), [acceptance checklist](docs/design-system/VERIFICATION.md) and [status/open findings](docs/design-system/STATUS.md): reusable owners, actual contracts, URL/focus rules, breakpoint values and regression scenarios.
-3. [Agent entry point](docs/design-system/agent-kit/design.md): visual hierarchy, composition, exact standalone imports and extension boundaries.
-4. [Component API](docs/design-system/agent-kit/components/API.md) plus relevant [human reference](docs/design-system/agent-kit/reference/components.md): anatomy, variants, states and evidence.
-5. `npm run design-system:dev`: local catalog, full listing and offer on port 8952. `npm run design-system:check` checks the immutable kit. No global skill or extra installation is required.
+## Implementation
 
-## Implement in this app
+- Map selected roles through `tokens.css`, `src/app/selected-theme.css` and `src/app/selected-app.css`; the homepage layout is in `src/app/landing.css`.
+- Reuse React/Base UI controls, JobCard, SalaryFact and current hash routes, Zod checks, persona data and local workflows. Keep original people artwork and local font files with licenses in `src/assets/selected/`.
+- Polish category names come first; persistent labels, explicit unknown salary, complete wrapping of long titles and comfortable touch targets apply to the whole app.
 
-- Preserve the requested scope, React/TypeScript/Vite, hash routes, Base UI's `render` composition, Zod/local data operations and current application workflows.
-- Use local Geist Serif Regular for headings, paper/white/ink/pink roles, source contours and radii, complete title wrapping and responsive listing/offer composition.
-- Adapt host tokens and existing primitives together. Do not paste the kit's global reset or vanilla controllers into React, substitute example data for product state, or create a parallel button/card library.
-- Keep docs/design-system/agent-kit unchanged as the reference; implement product UI in src/ and the host theme layer. Existing token names do not establish an alternative visual target.
-- Compare desktop/mobile evidence; test long content, missing salary/marks, keyboard focus, selection, dialogs and recovery. Run ./scripts/verify and report actual checks. The original kit report does not verify a new React screen.
+## Verification
 
-The running application has a host adaptation; current code still requires comparison with the source on each UI task. Follow the implementation map rather than creating parallel controls. Keep Search outside mobile filters, preserve copied section URLs under HashRouter, manage focus after chip removal, reuse outlined surfaces and compare full action type roles plus one contour. Record actual evidence and partial findings; preserve old audit artifacts in separate task-specific directories.
+- Run `npm run check`, inspect desktop/mobile screens and verify actual font loading, no overflow, keyboard focus, long content, empty and error states.
+- `npm run design-system:check` verifies only that the older 67-file kit is unchanged.
+- Record actual outcomes in [the integration task](docs/tasks/selected-landing-integration.md). Do not treat a screenshot as proof of usability or conversion.
+
+Keep search outside mobile filters, preserve copied section URLs under HashRouter and manage focus after chip removal. The preserved kit's old screenshots and measurements do not define current visual acceptance.

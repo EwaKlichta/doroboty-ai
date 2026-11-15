@@ -1,19 +1,21 @@
 # DoRoboty.ai — AIPH3 prototype
 
-A frontend-only job marketplace for participants to extend and test. Built with React, TypeScript and Vite, using Base UI components. The required visual direction for new and changed screens is the accepted Poster People design system.
+A frontend-only job marketplace for participants to extend and test. Built with React, TypeScript and Vite, using Base UI components. The entire application follows Ewa's [selected illustrated direction](docs/design-system/SELECTED-DIRECTION.md): Fraunces + DM Sans, purple/lime and original people artwork.
 
 ## Design system — start here for UI work
 
-Read [project integration instructions](docs/design-system/README.md), [host implementation rules](docs/design-system/IMPLEMENTATION.md) and [application acceptance checklist](docs/design-system/VERIFICATION.md), then [design.md](docs/design-system/agent-kit/design.md), [component API](docs/design-system/agent-kit/components/API.md) and the relevant [human documentation](docs/design-system/agent-kit/reference/index.html). The complete 67-file kit is stored under docs/design-system/agent-kit, including reusable CSS/JS, component states, listing/offer examples, screenshots, Geist Serif with license and illustration. No other chat or global skill is required.
+Current visual authority for every screen: [SELECTED-DIRECTION.md](docs/design-system/SELECTED-DIRECTION.md), with [GUI.md](GUI.md) as a short implementation guide. Preserve behavior and accessible interaction patterns.
+
+The previous 67-file Poster People kit is preserved under docs/design-system/agent-kit for historical reference and integrity checks. Its typography, palette and component measurements are no longer visual targets for the running app.
 
 ```sh
 npm run design-system:check
 npm run design-system:dev
 ```
 
-With Node 24, the first command verifies the preserved kit and examples; the second serves a separate local preview at http://127.0.0.1:8952/. No kit installation is needed. The main app uses port 3001 as below.
+With Node 24, the first command verifies the preserved kit and examples; the second serves a historical preview at http://127.0.0.1:8952/. The main app uses port 3001 as below.
 
-Build UI from this system, adapting its anatomy and visual roles into the existing React/Base UI components and host tokens. Preserve application behavior and hash routing; do not replace product state with the standalone demo fixtures/controllers. The application has a host adaptation. For every UI task, compare the affected anatomy, type roles, state and keyboard behavior with the reference; passing kit checks alone does not establish visual acceptance. See the integration guide for exact reading order, assets, React mapping, responsive rules and verification. AGENTS.md and CLAUDE.md enforce the same direction.
+Build UI using the selected direction and existing React/Base UI components. Preserve application behavior and hash routing; do not replace product state with the standalone demo fixtures/controllers. Compare the affected screen on desktop and mobile, including long content, focus and error states. Passing kit checks alone does not verify the running app.
 
 ## Run
 

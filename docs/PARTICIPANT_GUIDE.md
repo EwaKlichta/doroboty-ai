@@ -23,13 +23,17 @@ Karolina and Tomasz see their respective companies in the interface; this is rol
 
 ## Save, share and recover
 
-Changes survive reload in this browser. Settings can export a JSON file, import a scenario or reset to fixtures. Import/reset asks before replacing state. If a save is incompatible, download the original before resetting. Storage failure is shown explicitly; export before closing the tab. Use one editing tab at a time.
+Changes survive reload in this browser. Settings can export a JSON file, import a scenario or reset to fixtures. Import/reset asks before replacing state. If a save is incompatible, download the original before resetting. Storage failure is shown explicitly; export before closing the tab. Use one editing tab at a time. If another tab changes the same scenario, this tab stops saving and offers export or reload so it does not silently overwrite the newer save.
 
 A URL shares the interface, not your local changes. To transfer a scenario, share the exported file and import it in the other browser. Exports include all personas, applications and notes; never enter real personal data.
 
 ## Static build
 
+If the prototype stops working, contact Ewa using the channel that delivered the exercise link. Settings and the crash screen offer a diagnostic JSON download containing only fixed error codes and times. Share that file instead of a scenario export or real CV. Do not reset browser data before exporting work you want to retain.
+
 Run npm run build. Serve dist/ through any static HTTP host. No provider account is needed for local development. Do not open index.html via file://; ES modules need HTTP. Hash links work without route rewrite configuration.
+
+Release preparation and safe recovery steps are in [RELEASE.md](RELEASE.md). Browser history restoration reacquires writer ownership; after closing or leaving the editing tab, reload the remaining tab to edit.
 
 ## Verification
 

@@ -1,4 +1,5 @@
 import type { ReactNode, Ref } from "react";
+import { ProjectSummary } from "../projects/project-summary";
 import { BackLink } from "@/components/back-link";
 import { ProcessTimeline } from "@/components/process-timeline";
 import { RecordSheet } from "@/components/record-sheet";
@@ -24,7 +25,15 @@ export function ApplicationRecord({
 }: {
   application: Pick<
     Application,
-    "candidateId" | "candidateName" | "jobTitle" | "stage" | "answer" | "cv" | "score" | "summary"
+    | "candidateId"
+    | "candidateName"
+    | "jobTitle"
+    | "stage"
+    | "answer"
+    | "cv"
+    | "score"
+    | "summary"
+    | "project"
   >;
   companyName: string;
   audience: "candidate" | "employer";
@@ -68,6 +77,15 @@ export function ApplicationRecord({
         <RecordSheet
           label={candidate ? "Twoja wysłana aplikacja" : "Materiały kandydata"}
           sections={[
+            ...(application.project
+              ? [
+                  {
+                    value: "project",
+                    label: "Projekt",
+                    content: <ProjectSummary project={application.project} />,
+                  },
+                ]
+              : []),
             {
               value: "answer",
               label: "Odpowiedź",

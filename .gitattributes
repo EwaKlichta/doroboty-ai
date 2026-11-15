@@ -1,0 +1,2 @@
+# Keep cross-platform formatting and immutable reference hashes reproducible.
+* text=auto eol=lf

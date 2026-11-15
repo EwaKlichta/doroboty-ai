@@ -40,7 +40,7 @@ textarea:focus-visible {
   outline-offset: 4px;
 }
 .brand {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   font-weight: 700;
   letter-spacing: -1.2px;
 }
@@ -48,34 +48,11 @@ textarea:focus-visible {
   border: 1px solid var(--foreground);
   border-radius: 10px;
 }
-header:has([aria-label="Główna nawigacja"]) {
-  background: #fff;
-  backdrop-filter: none;
-}
-header:has([aria-label="Główna nawigacja"]) > div {
-  height: 80px;
-  max-width: 1280px;
-  padding-inline: 40px;
-}
-header a[aria-label="DoRoboty.ai — strona główna"] {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -1.7px;
-  line-height: 1;
-}
+
 footer {
   background: #fff;
 }
-.home-intro > div {
-  max-width: 1280px;
-  align-items: center;
-  padding-block: 64px;
-}
-.home-intro h1 {
-  font-size: 72px;
-  line-height: 1.02;
-  letter-spacing: -2.5px;
-}
+
 .people-art {
   width: 100%;
   max-width: 420px;
@@ -114,8 +91,9 @@ footer {
 .field > span:first-child {
   font-weight: 600;
 }
-.prototype-notice {
-  background: #ffe0f7;
+.prototype-notice,
+.prototype-data-boundary {
+  background: var(--gui-color-1-transparent);
   border: 1px solid var(--foreground);
   border-radius: 18px;
   line-height: 1.6;
@@ -137,7 +115,7 @@ footer {
   padding-block: 24px;
 }
 .workspace-avatar {
-  background: #ffe0f7;
+  background: var(--gui-color-1-transparent);
   border-radius: 10px;
   flex-shrink: 0;
 }
@@ -173,27 +151,15 @@ footer {
   border: 1px solid #181818;
 }
 @media (max-width: 1100px) {
-  .home-intro h1 {
-    font-size: 58px;
-  }
 }
 @media (max-width: 850px) {
-  .home-intro h1 {
-    font-size: 52px;
-  }
 }
 @media (max-width: 600px) {
   h1,
   .page-heading h1 {
     font-size: 38px;
   }
-  header:has([aria-label="Główna nawigacja"]) > div {
-    height: 72px;
-    padding-inline: 18px;
-  }
-  header a[aria-label="DoRoboty.ai — strona główna"] {
-    font-size: 25px;
-  }
+
   .main-content {
     padding: 24px 18px;
   }
@@ -203,13 +169,7 @@ footer {
   .prototype-form {
     padding: 20px;
   }
-  .home-intro > div {
-    gap: 28px;
-    padding-block: 36px;
-  }
-  .home-intro h1 {
-    font-size: 43px;
-  }
+
   .people-art {
     max-width: 230px;
   }

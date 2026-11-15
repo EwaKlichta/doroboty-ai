@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { initialState } from "./model";
+import legacyScenario from "../../../tests/fixtures/scenario-before-projects.json";
 import {
   MAX_IMPORT_BYTES,
   parseState,
@@ -18,6 +19,16 @@ function memory(raw: string | null = null) {
   };
 }
 describe("browser persistence and recovery", () => {
+  it("upgrades the baseline export, preserves original fields and round-trips the new save", () => {
+    const original = JSON.stringify(legacyScenario);
+    const store = memory(original);
+    const upgraded = readState(store);
+    expect(upgraded.blocked).toBe(false);
+    expect(upgraded.state).toEqual({ ...legacyScenario, projects: [] });
+    saveState(store, upgraded.state);
+    expect(parseState(store.getItem(STORAGE_KEY)!)).toEqual(upgraded.state);
+    expect(JSON.parse(original)).toEqual(legacyScenario);
+  });
   it("round-trips a complete valid scenario", () => {
     const storage = memory();
     const s = initialState();

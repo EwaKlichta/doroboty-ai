@@ -1,3 +1,5 @@
+> **2026-11-15 update:** [Selected direction](SELECTED-DIRECTION.md) defines the visual direction for the entire application. Historical visual values below are superseded. Preserve behavioral/accessibility contracts and historical evidence. See [integration task](../tasks/selected-landing-integration.md) for this change's verification.
+
 # Poster People — host implementation rules
 
 Read with the [project guide](README.md), [host catalog](HOST-COMPONENTS.md), [current status](STATUS.md), immutable [component API](agent-kit/components/API.md) and [human reference](agent-kit/reference/components.md). These are project integration rules, not a replacement v1 kit or a new reference release. Use the [acceptance checklist](VERIFICATION.md) before claiming completion.

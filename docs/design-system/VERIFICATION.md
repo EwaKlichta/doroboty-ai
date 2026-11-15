@@ -1,3 +1,5 @@
+> **2026-11-15 update:** [Selected direction](SELECTED-DIRECTION.md) defines the visual direction for the entire application. Historical visual values below are superseded. Preserve behavioral/accessibility contracts and historical evidence. See [integration task](../tasks/selected-landing-integration.md) for this change's verification.
+
 # Poster People — application acceptance checklist
 
 Use with [implementation rules](IMPLEMENTATION.md) and the [project guide](README.md). This checklist incorporates the implementation audits A01–A08/R01–R04 and the later process/application/interaction work. Read the [host catalog](HOST-COMPONENTS.md), [record APIs](RECORDS.md) and [status/open findings](STATUS.md) for current owners. It defines checks to execute; it does not claim any future screen has passed them.

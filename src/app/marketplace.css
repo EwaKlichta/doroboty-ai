@@ -274,10 +274,6 @@
   color: white;
 }
 @media (max-width: 360px) {
-  header a[aria-label="DoRoboty.ai — strona główna"] {
-    font-size: 20px;
-    letter-spacing: -1px;
-  }
 }
 .pp-container,
 .pp-filter-dialog {

@@ -1002,7 +1002,8 @@ code {
 .prototype-form > [data-slot="button"] {
   justify-self: start;
 }
-.prototype-notice {
+.prototype-notice,
+.prototype-data-boundary {
   padding: var(--gui-space-s) var(--gui-space-m);
   margin-bottom: var(--gui-space-m);
   background: var(--gui-warning-transparent);

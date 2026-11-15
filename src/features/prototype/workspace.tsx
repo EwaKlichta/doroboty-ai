@@ -16,6 +16,8 @@ import { CvAttachment } from "./cv-attachment";
 import { MatchScore } from "./match-score";
 import { RecruitingApplication } from "./recruiting-application";
 import { CandidateApplication } from "./candidate-application";
+import { projectSchema } from "../projects/schema";
+import { ProjectSummary } from "../projects/project-summary";
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -55,7 +57,9 @@ export function PersonPicker() {
                   person.role === "candidate"
                     ? (safeNext ?? "/app")
                     : person.role === "employer"
-                      ? "/app/oferty"
+                      ? safeNext?.startsWith("/app/oferty")
+                        ? safeNext
+                        : "/app/oferty"
                       : "/app/case",
                 );
               }}
@@ -126,6 +130,11 @@ export function WorkspaceHome() {
         ))}
       </div>
       <div className="mt-8 flex flex-wrap gap-3">
+        {candidate && (
+          <Link className={buttonVariants({ variant: "outline" })} to="/app/projekty">
+            Opisz swój projekt
+          </Link>
+        )}
         <Link className={buttonVariants()} to={candidate ? "/oferty" : "/app/kandydaci"}>
           {candidate ? "Przeglądaj oferty" : "Przejrzyj kandydatów"}
         </Link>
@@ -239,6 +248,9 @@ export function ApplyPage() {
   const notes = draft?.notes ?? "";
   const generated = draft?.generated ?? "";
   const [answer, setAnswer] = useState(draft?.answer ?? "");
+  const project = state.projects.find((item) => item.candidateId === person.id)?.value;
+  const projectReady = project && projectSchema.safeParse(project).success;
+  const [attachProject, setAttachProject] = useState(!!draft?.attachProject && !!projectReady);
   const [consent, setConsent] = useState(false);
   const [message, setMessage] = useState("");
   const [attempted, setAttempted] = useState(false);
@@ -281,7 +293,7 @@ export function ApplyPage() {
       document.getElementById("application-consent")?.focus();
       return;
     }
-    if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent })) {
+    if (run({ type: "submit", jobId: job!.id, notes, generated, answer, consent, attachProject })) {
       submittedOnce.current = true;
       setSubmitted(true);
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -352,6 +364,46 @@ export function ApplyPage() {
                 : `Minimum ${MIN_APPLICATION_ANSWER_LENGTH} znaków. Obecnie: ${answerLength}.`}
             </p>
           </section>
+          <section className="application-form-section" aria-labelledby="application-project-title">
+            <h3 id="application-project-title">Twój projekt</h3>
+            <div className="project-attachment">
+              {projectReady ? (
+                <>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={attachProject}
+                      disabled={submitted}
+                      onChange={(event) => {
+                        setAttachProject(event.target.checked);
+                        setConsent(false);
+                      }}
+                    />
+                    Dołącz projekt: {project.title}
+                  </label>
+                  <p>Pracodawca otrzyma kopię opisu z momentu wysłania aplikacji.</p>
+                  <details>
+                    <summary>Zobacz dołączany projekt</summary>
+                    <ProjectSummary project={project} />
+                  </details>
+                </>
+              ) : (
+                <p>
+                  {project
+                    ? "Dokończ opis projektu, żeby dołączyć go do aplikacji."
+                    : "Pokaż na jednym przykładzie, co zrobiłeś lub zrobiłaś samodzielnie."}
+                </p>
+              )}
+              <Link
+                to={`/app/projekt?oferta=${job.slug}`}
+                onClick={() =>
+                  run({ type: "draft", jobId: job.id, notes, generated, answer, attachProject })
+                }
+              >
+                {project ? "Edytuj opis projektu" : "Opisz projekt do tej aplikacji"}
+              </Link>
+            </div>
+          </section>
           <div className="application-form-section application-submit">
             <label className="application-consent">
               <Checkbox
@@ -364,7 +416,8 @@ export function ApplyPage() {
                 aria-label="Zatwierdzam treść i przesłanie aplikacji"
               />
               <span>
-                Zatwierdzam treść aplikacji i przesłanie profilu oraz przykładowego CV pracodawcy.
+                Zatwierdzam treść aplikacji i przesłanie profilu, przykładowego CV
+                {attachProject ? " oraz wybranego projektu" : ""} pracodawcy.
               </span>
             </label>
             {consentInvalid && (
@@ -387,7 +440,9 @@ export function ApplyPage() {
                 disabled={submitted}
                 variant="outline"
                 onClick={() => {
-                  if (run({ type: "draft", jobId: job.id, notes, generated, answer }))
+                  if (
+                    run({ type: "draft", jobId: job.id, notes, generated, answer, attachProject })
+                  )
                     setMessage("Szkic został zapisany.");
                 }}
               >

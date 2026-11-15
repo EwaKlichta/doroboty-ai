@@ -1,3 +1,5 @@
+> **2026-11-15 update:** [Selected direction](SELECTED-DIRECTION.md) defines the visual direction for the entire application. Historical visual values below are superseded. Preserve behavioral/accessibility contracts and historical evidence. See [integration task](../tasks/selected-landing-integration.md) for this change's verification.
+
 # Poster People — React host component catalog
 
 This is the receiving application's component map, checked against the implemented code on November 2, 2026. Use it with the immutable [source API](agent-kit/components/API.md), [integration rules](IMPLEMENTATION.md), [record APIs](RECORDS.md) and [acceptance checklist](VERIFICATION.md). These host components implement user-requested extensions; they do not create a new v1 kit release. [STATUS.md](STATUS.md) separates implementation evidence from unresolved audit findings.

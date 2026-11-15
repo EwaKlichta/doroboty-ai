@@ -1,0 +1,487 @@
+/* One visual language across public browsing, applications and workspaces. */
+:root {
+  --pp-line: #dedbe5;
+  --pp-surface-hover: #f8f5ff;
+  --pp-radius-small: 14px;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.prototype-section,
+.main-content,
+.pp-container {
+  max-width: 1200px;
+}
+
+.main-content {
+  padding: 40px 48px 64px;
+}
+
+.sidebar {
+  background: var(--gui-canvas);
+  box-shadow: inset -1px 0 #dedbe5;
+}
+
+.topbar {
+  box-shadow: inset 0 -1px #dedbe5;
+}
+
+.workspace-label {
+  box-shadow:
+    inset 0 1px #dedbe5,
+    inset 0 -1px #dedbe5;
+}
+
+.nav-link {
+  min-height: 48px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 18px;
+  color: var(--gui-text);
+}
+
+.nav-link:hover {
+  background: var(--gui-color-1-transparent);
+}
+
+.nav-active,
+.nav-active:hover {
+  background: var(--gui-color-1-transparent);
+  box-shadow: inset 0 0 0 2px var(--gui-color-1);
+  color: var(--gui-color-2);
+}
+
+.workspace-avatar {
+  border-radius: 18px;
+  background: var(--gui-color-4);
+  color: var(--gui-color-2);
+}
+
+.workspace .brand,
+.mobile-header .brand {
+  font-size: 27px;
+  font-weight: 850;
+  letter-spacing: -1.3px;
+}
+
+.demo-banner {
+  margin-bottom: 32px;
+  border: 1px solid #d8d2e7;
+  background: var(--gui-color-4);
+  box-shadow: none;
+  border-radius: 18px;
+  font-size: 14px;
+  color: var(--gui-text);
+}
+
+.page-heading h1,
+.dashboard-heading h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 750;
+  font-variation-settings:
+    "SOFT" 100,
+    "WONK" 1;
+  line-height: 1.1;
+  color: var(--gui-color-2);
+}
+
+.page-heading {
+  border-bottom-color: #dedbe5;
+}
+
+.prototype-panel,
+.metric-card,
+.visitors-card,
+.record-sheet,
+.success-panel,
+.pp-filter-panel,
+.pp-job-card,
+.pp-offer-hero,
+.pp-offer-action-card,
+.pp-offer-description,
+.pp-offer-employer {
+  border: 1px solid #dedbe5;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px #33215c0a;
+  background: white;
+}
+
+.prototype-panel,
+.metric-card,
+.visitors-card {
+  padding: 24px;
+}
+
+.prototype-panel h2,
+.prototype-panel h3,
+.record-reading h3,
+.application-offer h2,
+.application-form-section h3,
+.pp-job-title,
+.pp-employer-top h2 {
+  font-family: var(--font-body);
+  font-variation-settings: normal;
+  font-weight: 700;
+  color: var(--gui-text);
+}
+
+.prototype-panel h2,
+.application-offer h2 {
+  font-size: clamp(22px, 2.5vw, 28px);
+  line-height: 1.25;
+}
+
+.prototype-form,
+.record-sheet {
+  box-shadow: 0 8px 24px #33215c0a;
+}
+
+.field {
+  font-size: 16px;
+}
+
+.field > span:first-child {
+  color: var(--gui-color-2);
+}
+
+[data-slot="input"],
+[data-slot="textarea"],
+.native-select,
+[data-slot="select-trigger"] {
+  min-height: 52px;
+  font-size: 16px;
+  line-height: 1.5;
+  border-radius: 18px;
+}
+
+[data-slot="button"]:not([data-size="icon"]),
+.pp-search-submit,
+.pp-filter-button {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.metric-value {
+  color: var(--gui-color-2);
+}
+
+.record-tabs .record-tab[data-active] {
+  color: var(--gui-color-2);
+}
+
+.record-tab[data-active]::after {
+  background: var(--gui-color-1);
+}
+
+.pp-container {
+  width: min(1200px, calc(100% - 80px));
+}
+
+.pp-intro-grid {
+  min-height: 220px;
+}
+
+.pp-search-form {
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 240px) 156px;
+  align-items: end;
+  gap: 12px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.pp-search-field,
+.pp-location-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  border: 0;
+}
+
+.pp-search-field > .pp-search-label,
+.pp-location-field > .pp-search-label {
+  position: static;
+  pointer-events: auto;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gui-color-2);
+}
+
+.pp-search-field input,
+.pp-location-field select {
+  height: 52px;
+  border: 1px solid #bdb6cb;
+  border-radius: 18px;
+  background-color: white;
+  padding: 0 16px;
+  font-size: 16px;
+  color: var(--gui-text);
+}
+
+.pp-location-field select {
+  padding-right: 40px;
+  background-position: right 16px center;
+}
+
+.pp-search-submit {
+  height: 52px;
+  border: 0;
+  border-radius: 18px;
+}
+
+.pp-category-tab {
+  border-color: #bdb6cb;
+  background: white;
+  min-height: 64px;
+}
+
+.pp-category-tab small {
+  font-size: 12px;
+}
+
+.pp-category-tab.pp-selected,
+.pp-category-tab.pp-selected:hover {
+  background: var(--gui-color-4);
+  border: 2px solid var(--gui-color-1);
+  color: var(--gui-color-2);
+}
+
+.pp-category-tab.pp-selected small {
+  color: var(--gui-color-2);
+}
+
+.pp-category-tab.pp-selected::after {
+  content: "✓";
+  color: var(--gui-color-1);
+  font-weight: 800;
+}
+
+.pp-filter-heading,
+.pp-filter-group {
+  border-color: #dedbe5;
+}
+
+.pp-filter-group label,
+.pp-filter-group legend {
+  font-size: 14px;
+}
+
+.pp-filter-group input[type="checkbox"] {
+  accent-color: var(--gui-color-1);
+}
+
+.pp-filter-group input[type="checkbox"]:checked {
+  background: var(--gui-color-1);
+  border-color: var(--gui-color-1);
+}
+
+.pp-job-card {
+  overflow: visible;
+}
+
+.pp-job-card:hover {
+  border-color: var(--gui-color-1);
+  background: white;
+}
+
+.pp-job-side {
+  background: #f8f6ff;
+  border-left-color: #dedbe5;
+  border-radius: 0 24px 24px 0;
+}
+
+.pp-job-topline,
+.pp-job-facts,
+.pp-job-category,
+.pp-salary-missing,
+.pp-salary-description,
+.pp-offer-key-facts,
+.pp-offer-terms > div {
+  font-size: 14px;
+}
+
+.pp-job-title {
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.pp-job-tags span,
+.pp-offer-skill-row > span {
+  font-size: 13px;
+  background: var(--gui-canvas);
+}
+
+.pp-salary-tag {
+  background: var(--gui-color-4);
+  color: var(--gui-color-2);
+}
+
+.pp-detail-button {
+  font-size: 15px;
+  color: var(--gui-color-1);
+}
+
+.pp-offer-hero,
+.pp-offer-description {
+  overflow: hidden;
+}
+
+.pp-offer-hero h1,
+.application-header h1 {
+  font-size: clamp(38px, 4.5vw, 58px);
+}
+
+.pp-offer-hero h1 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-variation-settings: normal;
+  letter-spacing: -0.03em;
+  color: var(--gui-text);
+}
+
+.pp-offer-section p,
+.pp-employer-copy > div > p,
+.application-offer-summary,
+.record-reading p {
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.pp-offer-section-nav {
+  border-bottom-color: #dedbe5;
+}
+
+.pp-offer-section-nav a,
+.application-consent {
+  font-size: 15px;
+}
+
+.application-form-intro p,
+.application-help,
+.application-answer #application-answer-help {
+  font-size: 14px;
+}
+
+.application-answer textarea {
+  font-size: 16px;
+}
+
+.application-actions .application-send:disabled {
+  background: var(--gui-control-disabled);
+  color: var(--gui-text-muted);
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding-inline: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-content,
+  .prototype-section {
+    padding-inline: 20px;
+  }
+  .page-heading h1,
+  .dashboard-heading h1 {
+    font-size: 38px;
+  }
+  .sidebar-open {
+    background: var(--gui-canvas);
+  }
+}
+
+@media (max-width: 600px) {
+  .pp-container {
+    width: calc(100% - 40px);
+  }
+  .pp-search-form {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .pp-search-field {
+    grid-column: 1;
+    border: 0;
+    margin: 0;
+  }
+  .pp-search-field input,
+  .pp-location-field select,
+  .pp-search-submit {
+    height: 52px;
+    min-height: 52px;
+    padding-left: 16px;
+    font-size: 16px;
+  }
+  .pp-category-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-right: 0;
+    padding-right: 0;
+    overflow: visible;
+  }
+  .pp-category-tab {
+    min-height: 60px;
+    width: 100%;
+    white-space: normal;
+    padding: 10px;
+  }
+  .pp-category-tab b,
+  .pp-category-tab small {
+    display: block;
+    margin: 0;
+    font-size: 13px;
+  }
+  .pp-category-count {
+    font-size: 12px;
+  }
+  .pp-job-card {
+    overflow: hidden;
+  }
+  .pp-job-topline {
+    display: block;
+    padding-right: 40px;
+  }
+  .pp-job-topline .pp-separator {
+    display: none;
+  }
+  .pp-job-category,
+  .pp-job-company {
+    display: block;
+    overflow-wrap: normal;
+  }
+  .pp-job-title {
+    font-size: 22px;
+  }
+  .pp-job-facts,
+  .pp-job-topline,
+  .pp-job-category,
+  .pp-salary-missing,
+  .pp-salary-description {
+    font-size: 14px;
+  }
+  .pp-job-side {
+    border-radius: 0 0 24px 24px;
+    border-top-color: #dedbe5;
+  }
+  .prototype-panel,
+  .metric-card,
+  .visitors-card,
+  .record-sheet {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .pp-job-side {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pp-detail-button {
+    justify-self: start;
+  }
+}
